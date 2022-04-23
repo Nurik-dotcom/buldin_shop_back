@@ -24,7 +24,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.PositiveIntegerField()
     image = models.ImageField(upload_to='images/product')
-    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL)
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     add_time = models.DateField(auto_now_add=True)
     saled = models.IntegerField(default=0)
     in_sale = models.IntegerField(default=0)

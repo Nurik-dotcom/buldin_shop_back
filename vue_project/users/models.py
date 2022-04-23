@@ -14,7 +14,7 @@ TYPE_OF_FACE = [
 ]
 
 STATUS = [
-    ('Saler', 'Saler')
+    ('Saler', 'Saler'),
     ('Client', 'Clint')
 ]
 # TYPE_OF_WORK = [
