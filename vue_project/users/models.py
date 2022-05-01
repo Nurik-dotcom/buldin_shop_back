@@ -7,6 +7,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from products.models import Product
 
 TYPE_OF_FACE = [
     ('Юр.Лицо', 'Юр.Лицо'),
@@ -17,10 +18,7 @@ STATUS = [
     ('Saler', 'Saler'),
     ('Client', 'Clint')
 ]
-# TYPE_OF_WORK = [
-#     ('IP', 'ИП'),
-#     ('ТОО', 'ТОО')
-# ]
+
 
 class Profile(models.Model):
     type = models.CharField(choices=TYPE_OF_FACE, max_length=10, null=True)
@@ -42,10 +40,10 @@ class Profile(models.Model):
         if created:
             Profile.objects.create(user=instance)
         instance.profile.save()
-    @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-    def create_auth_token(sender, instance=None, created=False, **kwargs):
-        if created:
-            Token.objects.create(user=instance)
+    # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+    # def create_auth_token(sender, instance=None, created=False, **kwargs):
+    #     if created:
+    #         Token.objects.create(user=instance)
 # class IP_TOO(models.Model):
 #     title = models.CharField(max_length=1000, null=True)
 
@@ -59,3 +57,15 @@ class FizLico(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True)
     father_name = models.CharField(max_length=100)
+
+class Busket(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+
+    def __str__(self):
+        return self.profile
+
+    @receiver(post_save, sender=Profile)
+    def create_or_update_busket(sender, instance, created, **kwargs):
+        if created:
+            Busket.objects.create(profile=instance)

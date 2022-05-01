@@ -4,4 +4,5 @@ from .models import *
 admin.site.register(Profile)
 admin.site.register(YrLico)
 admin.site.register(FizLico)
+admin.site.register(Busket)
 
