@@ -17,10 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3fbc4c03ec72598f3a2e688b9145c769d2e09e37
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('item/', include('products.api.urls')),
     path('user/', include('users.api.urls'))
+<<<<<<< HEAD
 ]
 if settings.DEBUG:
      urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 3fbc4c03ec72598f3a2e688b9145c769d2e09e37

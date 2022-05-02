@@ -10,11 +10,15 @@ class BrandSerializers(serializers.ModelSerializer):
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
+<<<<<<< HEAD
         fields = ['category', 'slug']
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'}
         }
+=======
+        fields = ['category',]
+>>>>>>> 3fbc4c03ec72598f3a2e688b9145c769d2e09e37
 
 class ProductSerializers(serializers.ModelSerializer):
     brand = BrandSerializers
@@ -24,6 +28,7 @@ class ProductSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 class ForFilterSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
     # image = serializers.SerializerMethodField()
 
     class Meta:
@@ -32,6 +37,18 @@ class ForFilterSerializer(serializers.ModelSerializer):
     # def get_image(self, obj):
     #     request = self.context.get('request')
     #     return request.build_absolute_uri(obj.image.url)
+=======
+    category = CategorySerializers()
+    # image_url = serializers.SerializerMethodField('get_image_url')
+    class Meta:
+        model = Product
+        fields = ['id', 'image','title', 'price', 'category']
+
+    # def get_image_url(self, product):
+    #     request = self.context.get('request')
+    #     image_url = product.image.url
+    #     return request.build_absolute_uri(image_url)
+>>>>>>> 3fbc4c03ec72598f3a2e688b9145c769d2e09e37
 
 class CategorySerializer(serializers.ModelSerializer):
     products = ForFilterSerializer(many=True)
