@@ -6,11 +6,19 @@ from rest_framework.response import Response
 
 
 class ProductView(generics.ListAPIView):
-    serializer_class = ProductSerializers
+    serializer_class = ForFilterSerializer
     queryset = Product.objects.all()
+    lookup_field = 'category__sug'
 
-
-
+class CategoryFilter(APIView):
+    def get_object(self, category_slug):
+        return Category.objects.get(slug=category_slug)
+    
+    def get(self, request, category_slug):
+        category = self.get_object(category_slug)  
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+     
 class New_Products(APIView):
     def get(self, request):
         new_product = Product.objects.order_by('-id')[:4]

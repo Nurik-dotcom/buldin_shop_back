@@ -1,4 +1,4 @@
-from dataclasses import field
+
 from rest_framework import serializers
 from ..models import *
 
@@ -10,7 +10,11 @@ class BrandSerializers(serializers.ModelSerializer):
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['category', 'type']
+        fields = ['category', 'slug']
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'}
+        }
 
 class ProductSerializers(serializers.ModelSerializer):
     brand = BrandSerializers
@@ -20,7 +24,22 @@ class ProductSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 class ForFilterSerializer(serializers.ModelSerializer):
+    # image = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
-        fields = ['image','title', 'price']
+        fields = ['id', 'image','title', 'price']
+    # def get_image(self, obj):
+    #     request = self.context.get('request')
+    #     return request.build_absolute_uri(obj.image.url)
 
+class CategorySerializer(serializers.ModelSerializer):
+    products = ForFilterSerializer(many=True)
+    class Meta:
+        model = Category
+        fields = [
+            'slug',
+            'category', 
+            'products',
+            'get_absolute_url'
+        ]
